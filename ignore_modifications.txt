@@ -1,0 +1,77 @@
+eval.py
+921
+926
+646 -- ## IMAGE SAVER else:
+                        print(save_path)
+                        cv2.imwrite(save_path, img_numpy)
+
+
+# PLOT FUNCTIONS
+def plot_ann_leg(mask, high, low, angle, id="", cat="", ax=None):
+    if ax is None:
+        ax = plt.gca()
+    ax.imshow(mask, cmap='gray')
+    ax.plot(high[:, 0], high[:, 1], color="blue")
+    ax.plot(low[:, 0], low[:, 1], color="red")
+    ax.set_title("{}_{}: {:.2f}".format(id, cat, angle))
+    ax.axis("off")
+    return ax
+
+
+def get_ids_sample(sample_id):
+    ids = []
+    for i in range(1, 7):
+        filename = "sample_{}_{}.png".format(sample_id, i)
+        ids.append(filename_id[filename])
+    return ids
+
+
+def plot_ann_leg(mask, high, low, angle, id="", cat="", ax=None):
+    if ax is None:
+        ax = plt.gca()
+    ax.imshow(mask, cmap='gray')
+    ax.plot(high[:, 0], high[:, 1], color="blue")
+    ax.plot(low[:, 0], low[:, 1], color="red")
+    ax.set_title("{}_{}: {:.2f}".format(id, cat, angle))
+    ax.axis("off")
+    return ax
+
+
+def plot_lefts_rights(masks):
+    masks_left = [mask for mask in masks if mask['cat'] == 1]
+    masks_right = [mask for mask in masks if mask['cat'] == 2]
+
+    num_plots = max(len(masks_left), len(masks_right))
+    fig, ax = plt.subplots(2, num_plots, figsize=(num_plots * 3, 6))
+
+    for i, mask_dict in enumerate(masks_left):
+        ax[0][i] = plot_ann_leg(mask_dict['mask'], mask_dict['highs'], mask_dict['lows'], mask_dict['angle']
+                                , id=mask_dict['sample_id'], cat="LEFT", ax=ax[0][i])
+
+    for i, mask_dict in enumerate(masks_right):
+        ax[1][i] = plot_ann_leg(mask_dict['mask'], mask_dict['highs'], mask_dict['lows'], mask_dict['angle']
+                                , id=mask_dict['sample_id'], cat="RIGHT", ax=ax[1][i])
+
+    plt.show()
+
+
+def plot_sample(sample_id, mask_dict):
+    ids = get_ids_sample(sample_id)
+    selected_masks = [mask_dict[id] for id in ids]
+    plot_lefts_rights(selected_masks)
+
+
+def aggregate_angles(masks, agg_function=np.mean):
+    left_angles = [mask['angle'] for mask in masks if
+                   (mask['angle'] > 160 and mask['angle'] < 190 and mask['cat'] == 1)]
+    right_angles = [mask['angle'] for mask in masks if
+                    (mask['angle'] > 160 and mask['angle'] < 190 and mask['cat'] == 2)]
+    return agg_function(left_angles), agg_function(right_angles)
+
+
+def predict(angle, overpronator=168, supinator=176):
+    if angle < overpronator:
+        return 'Overpronator'
+    if angle > supinator:
+        return 'Supinator'
+    return 'Neutral'
