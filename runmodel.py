@@ -346,7 +346,7 @@ def main():
     global PATH, IMAGES_FOLDER, REACH_VERTICAL
     PATH = r'C:\Users\User\PycharmProjects\gitPodoactiva\YOLACT_'  # Adjust this path to where you've saved YOLACT locally  ## INPUT REQUIRED
     os.chdir(PATH)  # Change directory
-    VIDEO_PATH = 'F:/00-podoactiva/Videos/sample_20.MOV'  ## INPUT REQUIRED
+    VIDEO_PATH = r'C:\Users\User\PycharmProjects\gitPodoactiva\sample_16.MOV'  ## INPUT REQUIRED
     ID = "123"
     print(f"PATH: {VIDEO_PATH}    ID: {ID}")
 
@@ -360,7 +360,7 @@ def main():
 
     # Convert frames
     save_frames(VIDEO_PATH, './' + IMAGES_FOLDER, frame_interval=3)  # Set desired frame interval
-
+    ## frame_interval can cause problems if video length is too short
     # Create directory for outputted predictions
     PREDICTIONS_FOLDER = ID + '_PREDICTIONS'
     os.makedirs(PREDICTIONS_FOLDER, exist_ok=True)
