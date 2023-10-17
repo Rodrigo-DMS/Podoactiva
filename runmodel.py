@@ -344,7 +344,7 @@ def main():
     # PATH AND DIRECTORY
     # Declare the path to the folder where you have YOLACT installed
     global PATH, IMAGES_FOLDER, REACH_VERTICAL
-    PATH = r'C:\Users\User\PycharmProjects\podoactivaProject\yolact_files'  # Adjust this path to where you've saved YOLACT locally  ## INPUT REQUIRED
+    PATH = r'C:\Users\User\PycharmProjects\gitPodoactiva\YOLACT_'  # Adjust this path to where you've saved YOLACT locally  ## INPUT REQUIRED
     os.chdir(PATH)  # Change directory
     VIDEO_PATH = 'F:/00-podoactiva/Videos/sample_16.MOV'  ## INPUT REQUIRED
     ID = "123"
